@@ -18,6 +18,7 @@ const DEFAULT_ODDS_COPY = "Illustrative odds: 85% Grocery Bundle, 10% Mega Bundl
 const DEFAULT_API_TOKEN = "";
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_MYSTERY_BOX_API_BASE_URL ?? "https://test.aureliushq.co/api/mystery-box";
+const AUTH_REDIRECT_URL = "https://test.aureliushq.co";
 const INITIAL_ENTRY_LOADING_MS = 5000;
 const REVEAL_COUNTDOWN_STEP_MS = 3000;
 const REVEAL_COUNTDOWN_STEPS = 3;
@@ -290,7 +291,6 @@ export default function Home() {
   const [pendingReference, setPendingReference] = useState<string | null>(null);
   const [shareRevealToken, setShareRevealToken] = useState<string | null>(null);
   const [needsGatewayVerification, setNeedsGatewayVerification] = useState(false);
-  const [isAuthenticationBlocked, setIsAuthenticationBlocked] = useState(false);
   const suspenseTimeoutRef = useRef<number | null>(null);
   const openingTimeoutRef = useRef<number | null>(null);
   const flashTimeoutRef = useRef<number | null>(null);
@@ -327,12 +327,9 @@ export default function Home() {
     const hasRequiredParams = hasAuthenticationParams();
 
     if (!hasRequiredParams) {
-      setIsAuthenticationBlocked(true);
-      setIsPageBooting(false);
+      window.location.replace(AUTH_REDIRECT_URL);
       return;
     }
-
-    setIsAuthenticationBlocked(false);
   }, []);
 
   const canPay = acceptedTerms && !isProcessing;
@@ -672,25 +669,6 @@ export default function Home() {
       isCancelled = true;
     };
   }, [authToken, finalizeGatewayOrder, settlePaidOrder, showInsufficientWalletToast, startRevealSequence]);
-
-  if (isAuthenticationBlocked) {
-    return (
-      <main className="min-h-screen bg-[#0b1220] px-4 py-10 text-white">
-        <section className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-md items-center">
-          <div className="w-full rounded-[28px] border border-[#fca5a5]/40 bg-[#111827] p-6 text-center shadow-[0_30px_70px_-35px_rgba(0,0,0,0.9)]">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#fda4af]">Access Blocked</p>
-            <h1 className="mt-3 text-3xl font-extrabold text-white">User not authenticated</h1>
-            <p className="mt-3 text-sm leading-6 text-[#e5e7eb]">
-              This Mystery Box flow needs a valid `reference` or token param before it can continue.
-            </p>
-            <p className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-xs leading-5 text-[#cbd5e1]">
-              Re-open this page from the authenticated Aurelius flow and try again.
-            </p>
-          </div>
-        </section>
-      </main>
-    );
-  }
 
   const handleStartPurchase = () => {
     if (suspenseTimeoutRef.current !== null) {
