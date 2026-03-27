@@ -1,0 +1,91 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), "Avenir Next", "Segoe UI", sans-serif;
+}
+
+@keyframes confetti-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-10%) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(340px) rotate(340deg);
+  }
+}
+
+@keyframes reveal-suspense-shake {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate3d(-3px, 0, 0) rotate(-2deg);
+  }
+  40% {
+    transform: translate3d(3px, 0, 0) rotate(2deg);
+  }
+  60% {
+    transform: translate3d(-2px, 0, 0) rotate(-1deg);
+  }
+  80% {
+    transform: translate3d(2px, 0, 0) rotate(1deg);
+  }
+}
+
+@keyframes reveal-flash {
+  0% {
+    opacity: 0.95;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.18);
+  }
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -16px;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #fb923c 0%, #ffffff 45%, #2563eb 100%);
+  animation: confetti-fall 2.6s linear infinite;
+}
+
+.reveal-suspense-shake {
+  animation: reveal-suspense-shake 0.5s ease-in-out infinite;
+}
+
+.reveal-flash-overlay {
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.96) 0%, rgba(251, 191, 36, 0.82) 30%, rgba(251, 146, 60, 0.18) 58%, rgba(255, 255, 255, 0) 78%);
+  mix-blend-mode: screen;
+  animation: reveal-flash 0.55s ease-out forwards;
+}

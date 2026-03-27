@@ -1,0 +1,434 @@
+{
+  "info": {
+    "_postman_id": "mystery-box-api-collection",
+    "name": "Mystery Box API",
+    "description": "Complete API collection for Mystery Box - auth, products, orders, payments, and reveal",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://test.aureliushq.co/api/mystery-box",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "order_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "reference",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "reveal_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "slug",
+      "value": "product-slug",
+      "type": "string"
+    },
+    {
+      "key": "categorySlug",
+      "value": "category-slug",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"John\",\n  \"last_name\": \"Doe\",\n  \"email\": \"john@example.com\",\n  \"phone\": \"08012345678\",\n  \"state\": \"lagos\",\n  \"lga\": \"Ikeja\",\n  \"country\": \"Nigeria\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\",\n  \"employee_status\": \"Employed\",\n  \"student_id\": null,\n  \"school_name\": null,\n  \"referral_code\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/register",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "register"
+              ]
+            },
+            "description": "Register a new user"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/login",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "description": "Login with email and password. Save token to collection variable."
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/forgot-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "forgot-password"
+              ]
+            },
+            "description": "Request password reset link"
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"reset_token_from_email\",\n  \"email\": \"john@example.com\",\n  \"password\": \"newpassword123\",\n  \"password_confirmation\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/reset-password",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reset-password"
+              ]
+            },
+            "description": "Reset password using token from email"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products"
+              ]
+            },
+            "description": "Get all products/foods"
+          }
+        },
+        {
+          "name": "Get Product by Slug",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/products/{{slug}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "{{slug}}"
+              ]
+            },
+            "description": "Get single product by slug"
+          }
+        },
+        {
+          "name": "Get Categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories"
+              ]
+            },
+            "description": "Get all product categories"
+          }
+        },
+        {
+          "name": "Get Category Products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/categories/{{categorySlug}}/products",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "categories",
+                "{{categorySlug}}",
+                "products"
+              ]
+            },
+            "description": "Get products by category slug"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Mystery Box",
+      "item": [
+        {
+          "name": "Get Promo Config",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/promo-config",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "promo-config"
+              ]
+            },
+            "description": "Get current promo/odds: active, cycle_name, price, iPhone quota, odds"
+          }
+        },
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"payment_method\": \"wallet\",\n  \"address_id\": 0\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/orders",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "orders"
+              ]
+            },
+            "description": "Create mystery box order. payment_method: wallet | paystack | fincra. address_id: index from home_address (0-based)."
+          }
+        },
+        {
+          "name": "Initialize Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"order_id\": {{order_id}},\n  \"payment_method\": null\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/payment/initialize",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payment",
+                "initialize"
+              ]
+            },
+            "description": "Initialize payment. Wallet: debits immediately. Gateway: returns payment_url."
+          }
+        },
+        {
+          "name": "Verify Payment",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/payment/verify?reference={{reference}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payment",
+                "verify"
+              ],
+              "query": [
+                {
+                  "key": "reference",
+                  "value": "{{reference}}"
+                }
+              ]
+            },
+            "description": "Verify payment by reference. Returns reveal result when paid."
+          }
+        },
+        {
+          "name": "Payment Callback",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/payment/callback?reference={{reference}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payment",
+                "callback"
+              ],
+              "query": [
+                {
+                  "key": "reference",
+                  "value": "{{reference}}"
+                }
+              ]
+            },
+            "description": "Gateway redirect callback. Same as verify."
+          }
+        },
+        {
+          "name": "Get Reveal Result (by Order ID)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reveal?order_id={{order_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reveal"
+              ],
+              "query": [
+                {
+                  "key": "order_id",
+                  "value": "{{order_id}}"
+                }
+              ]
+            },
+            "description": "Get reveal result by order_id. Returns reward_bundle, includes_iphone, reveal_token."
+          }
+        },
+        {
+          "name": "Get Reveal Result (by Token)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reveal?reveal_token={{reveal_token}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reveal"
+              ],
+              "query": [
+                {
+                  "key": "reveal_token",
+                  "value": "{{reveal_token}}"
+                }
+              ]
+            },
+            "description": "Get reveal result by reveal_token (public share links)."
+          }
+        }
+      ]
+    }
+  ]
+}
