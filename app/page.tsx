@@ -87,6 +87,21 @@ function hasAuthenticationParams(): boolean {
   return Boolean(reference || token);
 }
 
+function consumeRefreshStageParam(): boolean {
+  if (typeof window === "undefined") return false;
+
+  const url = new URL(window.location.href);
+
+  if (url.searchParams.get("stage") !== "refresh") return false;
+
+  url.searchParams.delete("stage");
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  window.history.replaceState(window.history.state, "", nextUrl);
+  window.location.reload();
+
+  return true;
+}
+
 function extractPayload<T>(payload: unknown): T {
   if (
     payload &&
@@ -297,6 +312,10 @@ export default function Home() {
   const errorToastTimeoutRef = useRef<number | null>(null);
   const revealLoadingStartedAtRef = useRef<number | null>(null);
   const entryLoadingTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    consumeRefreshStageParam();
+  }, []);
 
   useEffect(() => {
     if (!authToken) return;
